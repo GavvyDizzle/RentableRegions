@@ -36,6 +36,11 @@ public class CreateCommand extends SubCommand {
             return;
         }
 
+        if (shopManager.isNotInValidWorld(sender)) {
+            sender.sendMessage(ChatColor.RED + "You are not in a valid shops world");
+            return;
+        }
+
         String newID = args[1];
         ProtectedRegion region;
 

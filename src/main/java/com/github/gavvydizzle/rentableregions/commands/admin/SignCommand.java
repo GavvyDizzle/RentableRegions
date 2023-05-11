@@ -69,6 +69,12 @@ public class SignCommand extends SubCommand {
                 sender.sendMessage(ChatColor.RED + "Only players can set a shop sign");
                 return;
             }
+
+            if (shopManager.isNotInValidWorld(sender)) {
+                sender.sendMessage(ChatColor.RED + "You are not in a valid shops world");
+                return;
+            }
+
             Player player = (Player) sender;
 
             if (signLocation != null) {

@@ -713,6 +713,21 @@ public class ShopManager implements Listener {
         return count;
     }
 
+    /**
+     * Determines if this player is not in a valid shops world.
+     * If CONSOLE is passed, then this method will always return false
+     * @param sender The CommandSender
+     * @return If this player is not in a valid shops world
+     */
+    // Currently this only checks one world, but it could be adapted to work for a list of worlds
+    public boolean isNotInValidWorld(CommandSender sender) {
+        if (!(sender instanceof Player)) return false;
+
+        if (world == null) return true;
+
+        Player player = (Player) sender;
+        return !world.getUID().equals(player.getWorld().getUID());
+    }
 
     public World getWorld() {
         return world;

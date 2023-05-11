@@ -40,6 +40,11 @@ public class EditVisitLocationCommand extends SubCommand {
             return;
         }
 
+        if (shopManager.isNotInValidWorld(sender)) {
+            sender.sendMessage(ChatColor.RED + "You are not in a valid shops world");
+            return;
+        }
+
         Player player = (Player) sender;
 
         if (!shopManager.isInWorld(player)) {

@@ -38,6 +38,11 @@ public class EditRegionCommand extends SubCommand {
             return;
         }
 
+        if (shopManager.isNotInValidWorld(sender)) {
+            sender.sendMessage(ChatColor.RED + "You are not in a valid shops world");
+            return;
+        }
+
         Shop shop = shopManager.getShopByID(args[1]);
         if (shop == null) {
             sender.sendMessage(Messages.invalidShopID.replace("{id}", args[1].toLowerCase()));

@@ -37,6 +37,11 @@ public class CloneCommand extends SubCommand {
             return;
         }
 
+        if (shopManager.isNotInValidWorld(sender)) {
+            sender.sendMessage(ChatColor.RED + "You are not in a valid shops world");
+            return;
+        }
+
         String oldID = args[1];
         Shop clone;
         String newID = args[2];
