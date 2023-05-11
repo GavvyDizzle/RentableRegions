@@ -1,0 +1,20 @@
+name: RentableRegions
+description: Highly configurable rentable shops plugin
+version: '${project.version}'
+main: com.github.gavvydizzle.rentableregions.RentableRegions
+api-version: 1.19
+depend: [ServerUtils, Vault, WorldGuard]
+softdepend: [Multiverse-Core, PlayerLevels]
+authors: [GavvyDizzle]
+commands:
+  rr:
+    aliases: [rentableregions]
+    description: RentableRegions admin commands
+    permission: rentableregions.admin
+    permission-message: Insufficient permission
+  market:
+    aliases: [cell]
+    description: RentableRegions player commands
+    permission: rentableregions.player
+    permission-message: Insufficient permission
+
