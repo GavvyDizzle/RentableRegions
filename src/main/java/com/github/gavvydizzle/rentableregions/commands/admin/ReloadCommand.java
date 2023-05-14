@@ -142,7 +142,7 @@ public class ReloadCommand extends SubCommand {
 
     private void reloadShops() {
         RentableRegions.getInstance().reloadConfig();
-        if (shopManager.getRegionManager() != null) { // Reloading the file with a null RegionManager causes NPE error
+        if (shopManager.getRegionManager() != null) {
             ShopsConfig.reload();
         }
         shopManager.reload();

@@ -83,8 +83,8 @@ public class ShopMenu implements ClickableMenu {
         config.addDefault("shopmenu.items.lottery.name", "&eLottery");
         config.addDefault("shopmenu.items.lottery.lore", Arrays.asList(
                 "<SOLID:5CFF5C>Left-click to join the lottery",
-                "",
                 "<SOLID:FF5C5C>Right-click to leave the lottery",
+                "",
                 "<SOLID:FFFF8F>{entries} &7players are currently entered"
         ));
 
