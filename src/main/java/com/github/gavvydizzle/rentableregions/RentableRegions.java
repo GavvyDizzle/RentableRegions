@@ -3,7 +3,6 @@ package com.github.gavvydizzle.rentableregions;
 import com.github.gavvydizzle.rentableregions.commands.AdminCommandManager;
 import com.github.gavvydizzle.rentableregions.commands.PlayerCommandManager;
 import com.github.gavvydizzle.rentableregions.gui.InventoryManager;
-import com.github.gavvydizzle.rentableregions.shop.Shop;
 import com.github.gavvydizzle.rentableregions.shop.ShopLogger;
 import com.github.gavvydizzle.rentableregions.shop.ShopManager;
 import com.github.gavvydizzle.rentableregions.utils.Messages;
@@ -12,7 +11,6 @@ import me.gavvydizzle.playerlevels.api.PlayerLevelsAPI;
 import me.maximus1027.mittenrankups.MittenAPI.RankupsAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -30,11 +28,6 @@ public final class RentableRegions extends JavaPlugin {
 
     private PlayerLevelsAPI playerLevelsAPI;
     private RankupsAPI rankupsAPI;
-
-    @Override
-    public void onLoad() {
-        ConfigurationSerialization.registerClass(Shop.class);
-    }
 
     @Override
     public void onEnable() {

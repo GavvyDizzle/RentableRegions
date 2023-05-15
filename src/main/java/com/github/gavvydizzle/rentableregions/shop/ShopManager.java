@@ -137,23 +137,30 @@ public class ShopManager implements Listener {
             for (String key : Objects.requireNonNull(config.getConfigurationSection("shops")).getKeys(false)) {
                 String path = "shops." + key;
 
-                Shop shop = (Shop) config.get(path);
-                if (shop == null || !shop.isLoaded()) {
-                    instance.getLogger().warning("Failed to load shop from " + path);
-                }
-                else {
-                    shopMap.put(shop.getId(), shop);
-                    if (shop.getSignLocation() != null) signShopMap.put(shop.getSignLocation(), shop);
-                    for (String s : shop.getRegionNames()) {
-                        regionShopMap.put(s, shop);
+                try {
+                    Shop shop = new Shop(Objects.requireNonNull(config.getConfigurationSection(path)), this);
+                    if (!shop.isLoaded()) {
+                        instance.getLogger().warning("Failed to load shop from " + path);
+                    } else {
+                        if (shopMap.containsKey(shop.getId())) {
+                            instance.getLogger().warning("Failed to load shop from " + path + ". The id (" + shop.getId() + ") is already in use!");
+                            continue;
+                        }
+
+                        shopMap.put(shop.getId(), shop);
+                        if (shop.getSignLocation() != null) signShopMap.put(shop.getSignLocation(), shop);
+                        for (String s : shop.getRegionNames()) {
+                            regionShopMap.put(s, shop);
+                        }
                     }
+                } catch (Exception e) {
+                    instance.getLogger().severe("Encountered an error when loading shop from " + path);
+                    e.printStackTrace();
                 }
             }
         }
         else {
             instance.getLogger().warning("No shops are defined in shops.yml!");
-            config.addDefault("shops", new HashMap<>());
-            ShopsConfig.save();
         }
     }
 
@@ -167,7 +174,7 @@ public class ShopManager implements Listener {
 
         for (Shop shop : shopMap.values()) {
             try {
-                config.set("shops." + shop.getId(), shop);
+                shop.saveToConfig(config);
             }
             catch (Exception e) {
                 instance.getLogger().severe("Failed to save shop " + shop.getId());
@@ -189,7 +196,7 @@ public class ShopManager implements Listener {
 
         for (Shop shop : list) {
             try {
-                config.set("shops." + shop.getId(), shop);
+                shop.saveToConfig(config);
             }
             catch (Exception e) {
                 instance.getLogger().severe("Failed to save shop " + shop.getId());
@@ -288,7 +295,7 @@ public class ShopManager implements Listener {
 
         // Remove shop sign if set
         if (shop.getSignLocation() != null && shop.getSignLocation().getBlock().getState() instanceof Sign) {
-            shop.setSignLocation(null);
+            shop.getSignLocation().getBlock().setType(Material.AIR);
         }
 
         // Remove regions from region map
@@ -303,9 +310,7 @@ public class ShopManager implements Listener {
             }
         }
         else {
-            shop.removeEntryFlag();
-            shop.removeAllMembers();
-            shop.removeOwner();
+            shop.cleanRegionsOnDelete();
         }
 
         // Remove the config section for this shop
@@ -316,7 +321,7 @@ public class ShopManager implements Listener {
                 int count = 0;
                 @Override
                 public void run() {
-                    if (count >= 10) {
+                    if (count >= 5) {
                         instance.getLogger().severe("Failed to delete shop " + shop.getId() + " after 5 attempts. This deleted shop will reappear the next time the shops file gets reloaded.");
                         cancel();
                         return;
@@ -564,7 +569,7 @@ public class ShopManager implements Listener {
      * @param names The names of the regions
      * @return A list of all regions that were successfully found
      */
-    public ArrayList<ProtectedRegion> getRegionsByName(ArrayList<String> names) {
+    public ArrayList<ProtectedRegion> getRegionsByName(List<String> names) {
         ArrayList<ProtectedRegion> arr = new ArrayList<>(names.size());
 
         for (String name : names) {

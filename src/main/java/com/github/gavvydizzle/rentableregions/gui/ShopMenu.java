@@ -376,7 +376,7 @@ public class ShopMenu implements ClickableMenu {
 
         String timeFormatted = Numbers.getTimeFormatted(shop.getRentManager().secondsGainedForNextRent());
         String priceFormatted = Numbers.withSuffix(Math.max(0, shop.getRentManager().priceOfNextRent()));
-        String timeRemaining = Numbers.getTimeFormatted(shop.getRentManager().getSecondsRemaining());
+        String timeRemaining = Numbers.getTimeFormatted(shop.getRentManager().getSecondsRemaining(), "0s");
         String rentPrice = Numbers.withSuffix(shop.getRentManager().getRentPrice());
         String rentTime = Numbers.getTimeFormatted(shop.getRentManager().getSecondsPerRent());
         String maxTime = Numbers.getTimeFormatted(shop.getRentManager().getMaxRentSeconds());

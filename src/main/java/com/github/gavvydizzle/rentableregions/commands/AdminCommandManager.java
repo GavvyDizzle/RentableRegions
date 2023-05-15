@@ -47,6 +47,7 @@ public class AdminCommandManager implements TabExecutor {
         subcommands.add(new EditVisitLocationCommand(this, shopManager));
         subcommands.add(new InfoCommand(this, shopManager));
         subcommands.add(new ReloadCommand(this, shopManager, inventoryManager));
+        subcommands.add(new SaveAllCommand(this, shopManager));
         subcommands.add(new SetPropertyCommand(this, shopManager));
         signCommand = new SignCommand(this, shopManager);
         subcommands.add(signCommand);

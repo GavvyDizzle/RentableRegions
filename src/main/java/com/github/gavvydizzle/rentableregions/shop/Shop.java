@@ -26,14 +26,15 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class Shop implements ConfigurationSerializable {
+public class Shop {
 
     private static final int DEFAULT_MEMBER_CAPACITY = 1;
     private static final int MAXIMUM_CAPACITY = 10;
@@ -101,34 +102,35 @@ public class Shop implements ConfigurationSerializable {
 
         shopMenu = new ShopMenu(this);
         isLoaded = true;
+        isDirty = true; // Save when created
     }
 
     /**
-     * Creates a shop from its serialization map
-     * @param map The map
+     * Creates a shop from its configuration section
+     * @param section The ConfigurationSection this shop is defined in
      */
-    public Shop(Map<String, Object> map) {
-        this.id = (String) map.get("id");
+    public Shop(@NotNull ConfigurationSection section, ShopManager shopManager) {
+        this.id = Objects.requireNonNull(section.getString("id"));
 
-        ArrayList<String> regionStrings = new ArrayList<>((List<String>) map.get("regionNames"));
-        regions = RentableRegions.getInstance().getShopManager().getRegionsByName(regionStrings);
+        List<String> regionStrings = section.getStringList("regionNames");
+        regions = shopManager.getRegionsByName(regionStrings);
 
-        ownerUUID = map.get("owner").equals("null") ? null : UUID.fromString((String) map.get("owner"));
+        ownerUUID = Objects.requireNonNull(section.getString("owner")).isEmpty() ? null : UUID.fromString(Objects.requireNonNull(section.getString("owner")));
 
-        ArrayList<String> memberUUIDStrings = new ArrayList<>((List<String>) map.get("members"));
+        List<String> memberUUIDStrings = section.getStringList("members");
         memberUUIDs = new ArrayList<>();
         for (String str : memberUUIDStrings) {
             memberUUIDs.add(UUID.fromString(str));
         }
 
-        this.memberCapacity = (int) map.get("memberCapacity");
-        this.visitLocation = (Location) map.get("visitLocation");
-        this.signLocation = (Location) map.get("signLocation");
+        this.memberCapacity = section.getInt("memberCapacity");
+        this.visitLocation = section.getLocation("visitLocation");
+        this.signLocation = section.getLocation("signLocation");
 
-        rentManager = new RentManager(this, (int) map.get("secondsRemaining"), (int) map.get("secondsPerRent"),
-                (int) map.get("maxRentSeconds"), (int) map.get("rentPrice"), (int) map.get("levelRequired"));
+        rentManager = new RentManager(this, section.getInt("secondsRemaining"), section.getInt("secondsPerRent"),
+                section.getInt("maxRentSeconds"), section.getInt("rentPrice"), section.getInt("levelRequired"));
 
-        ArrayList<String> lotteryUUIDStrings = new ArrayList<>((List<String>) map.get("lottery"));
+        List<String> lotteryUUIDStrings = section.getStringList("lottery");
         ArrayList<UUID> lotteryUUIDs = new ArrayList<>();
         for (String str : lotteryUUIDStrings) {
             lotteryUUIDs.add(UUID.fromString(str));
@@ -141,26 +143,28 @@ public class Shop implements ConfigurationSerializable {
 
         shopMenu = new ShopMenu(this);
         isLoaded = true;
+        isDirty = true; // Save when created
     }
 
-    @Override
-    @NotNull
-    public final Map<String, Object> serialize() {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("id", id);
-        map.put("regionNames", getRegionNames());
-        map.put("owner", ownerUUID != null ? ownerUUID.toString() : "null");
-        map.put("members", memberUUIDStrings());
-        map.put("memberCapacity", memberCapacity);
-        map.put("visitLocation", visitLocation);
-        map.put("signLocation", signLocation);
-        map.put("secondsRemaining", rentManager.getSecondsRemaining());
-        map.put("secondsPerRent", rentManager.getSecondsPerRent());
-        map.put("maxRentSeconds", rentManager.getMaxRentSeconds());
-        map.put("rentPrice", rentManager.getRentPrice());
-        map.put("levelRequired", rentManager.getLevelRequired());
-        map.put("lottery", lotteryManager.getLotteryUUIDStrings());
-        return map;
+    /**
+     * Saves the entire shop
+     * @param config The config file to save to
+     */
+    protected void saveToConfig(@NotNull FileConfiguration config) {
+        String path = "shops." + id + ".";
+        config.set(path + "id", id);
+        config.set(path + "regionNames", getRegionNames());
+        config.set(path + "owner", ownerUUID == null ? "" : ownerUUID.toString());
+        config.set(path + "members", memberUUIDStrings());
+        config.set(path + "memberCapacity", memberCapacity);
+        config.set(path + "visitLocation", visitLocation);
+        config.set(path + "signLocation", signLocation);
+        config.set(path + "secondsRemaining", rentManager.getSecondsRemaining());
+        config.set(path + "secondsPerRent", rentManager.getSecondsPerRent());
+        config.set(path + "maxRentSeconds", rentManager.getMaxRentSeconds());
+        config.set(path + "rentPrice", rentManager.getRentPrice());
+        config.set(path + "levelRequired", rentManager.getLevelRequired());
+        config.set(path + "lottery", lotteryManager.getLotteryUUIDStrings());
     }
 
     private ArrayList<String> memberUUIDStrings() {
@@ -499,6 +503,17 @@ public class Shop implements ConfigurationSerializable {
                 region.setFlag(Flags.ENTRY, StateFlag.State.DENY);
             }
             return true;
+        }
+    }
+
+    /**
+     * Removes the owner and members form this region and unsets the ENTRY flag
+     */
+    protected void cleanRegionsOnDelete() {
+        for (ProtectedRegion region : regions) {
+            region.getOwners().clear();
+            region.getMembers().clear();
+            region.setFlag(Flags.ENTRY, null);
         }
     }
 

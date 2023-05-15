@@ -73,7 +73,7 @@ public class EditVisitLocationCommand extends SubCommand {
         Location location;
         if (args.length == 3) {
             location = player.getLocation();
-            snapLocation(location, true);
+            if (!exact) snapLocation(location, true);
         }
         else if (args.length == 6) {
             location = player.getLocation();
