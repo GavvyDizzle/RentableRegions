@@ -56,6 +56,7 @@ A flexible market/cells/player housing Spigot plugin
 - `/rr toggleTimer` Toggles the shop timer on/off
 - `/rr transfer <id> <toPlayer> [time]` Transfer shop ownership and set the rent time remaining
 - `/rr updateSigns` Reloads the text on all shop signs
+- `/rr validateRegions [update]` Checks all shop regions for owner and member mismatches
 - `/rr visitLocation <id> <exact|snap> [x] [y] [z] [pitch] [yaw]` Edit a shop's visit location
 
 ### Shop Menu

@@ -13,6 +13,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +40,7 @@ public class DumpCommand extends SubCommand {
 
     @Override
     public void perform(CommandSender sender, String[] args) {
-        if (args.length < 3) {
+        if (args.length < 2) {
             sender.sendMessage(getColoredSyntax());
             return;
         }
@@ -64,7 +65,7 @@ public class DumpCommand extends SubCommand {
                 return;
             }
 
-            String fileName = dtf + "_" + args[1].toLowerCase() + "_dump.txt";
+            String fileName = dtf.format(LocalDateTime.now()) + "_" + args[1].toLowerCase() + "_dump.txt";
 
             try (FileWriter fw = new FileWriter(path + fileName, false);
                  BufferedWriter bw = new BufferedWriter(fw);
@@ -73,6 +74,7 @@ public class DumpCommand extends SubCommand {
                 for (String str : output) {
                     out.println(str);
                 }
+                sender.sendMessage(ChatColor.GREEN + "Successfully created dump at plugins/RentableRegions/" + fileName);
             } catch (IOException e) {
                 Bukkit.getLogger().severe("Failed to write the " + args[1].toLowerCase() + " dump");
                 Bukkit.getLogger().severe(e.getMessage());

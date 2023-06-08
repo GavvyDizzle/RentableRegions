@@ -202,8 +202,8 @@ public class Shop {
 
         createUnclaimEvent();
 
-        ownerUUID = null;
-        memberUUIDs.clear();
+        removeOwner();
+        removeAllMembers();
 
         lotteryManager.runLottery();
         shopMenu.updateAllItems();
@@ -665,14 +665,14 @@ public class Shop {
      * @return True if the members and regions agree, false if mismatched
      */
     public boolean validateMembers() {
-        for (ProtectedRegion region : regions) {
-            int ownerSize = ownerUUID == null ? 0 : 1;
+        int ownerSize = ownerUUID == null ? 0 : 1;
 
-            if (ownerSize != region.getMembers().size()) return false; // Owner number mismatch
-            else if (!region.getOwners().getUniqueIds().contains(ownerUUID)) return false; // Owner not the same
+        for (ProtectedRegion region : regions) {
+            if (ownerSize != region.getOwners().size()) return false; // Owner number mismatch
+            else if (ownerUUID != null && !region.getOwners().getUniqueIds().contains(ownerUUID)) return false; // Owner not the same
 
             if (memberUUIDs.size() != region.getMembers().size()) return false; // Member number mismatch
-            else if (memberUUIDs.containsAll(region.getMembers().getUniqueIds())) return false; // Member list mismatch
+            else if (!memberUUIDs.containsAll(region.getMembers().getUniqueIds())) return false; // Member list mismatch
         }
         return true;
     }
@@ -683,9 +683,6 @@ public class Shop {
      */
     public void updateMembers() {
         for (ProtectedRegion region : regions) {
-            region.getOwners().clear();
-            region.getMembers().clear();
-
             if (ownerUUID != null) region.getOwners().addPlayer(ownerUUID);
             for (UUID uuid : memberUUIDs) {
                 region.getMembers().addPlayer(uuid);
@@ -767,7 +764,7 @@ public class Shop {
     }
 
     @NotNull
-    protected ArrayList<ProtectedRegion> getRegions() {
+    public ArrayList<ProtectedRegion> getRegions() {
         return regions;
     }
 
@@ -830,8 +827,8 @@ public class Shop {
         return isDirty;
     }
 
-    protected void setDirty(boolean dirty) {
-        isDirty = dirty;
+    protected void setNotDirty() {
+        isDirty = false;
     }
 
     protected boolean isSaving() {

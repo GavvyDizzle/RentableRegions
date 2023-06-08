@@ -229,6 +229,7 @@ public class ShopManager implements Listener {
                         saveDirtyShops(dirtyShops);
                         for (Shop shop : dirtyShops) {
                             shop.setSaving(false);
+                            shop.setNotDirty();
                         }
                     });
                 }
@@ -338,7 +339,8 @@ public class ShopManager implements Listener {
                     if (shop.getSignLocation() != null) {
                         signShopMap.remove(shop.getSignLocation());
                         shop.setSignLocation(null);
-                    }    count++;
+                    }
+                    count++;
                 }
             };
         }
@@ -512,6 +514,31 @@ public class ShopManager implements Listener {
     public void removeShopRegion(Shop shop, ProtectedRegion region) {
         shop.removeRegion(region);
         regionShopMap.remove(region.getId());
+    }
+
+    /**
+     * Gets the shop at this location.
+     * If multiple shops overlap this location, the first one found will be returned.
+     * It is assumed that no shops will have overlapping regions.
+     * @param location The location
+     * @return The shop at this location or null if none exists
+     */
+    @Nullable
+    public Shop getShopFromLocation(Location location) {
+        BlockVector3 pos = BlockVector3.at(location.getX(), location.getY(), location.getZ());
+        ApplicableRegionSet set = regionManager.getApplicableRegions(pos);
+
+        // Checks all regions at this location to find a shop
+        for (ProtectedRegion protectedRegion : set) {
+            if (!(protectedRegion instanceof GlobalProtectedRegion)) {
+                Shop shop = regionShopMap.get(protectedRegion.getId());
+                if (shop != null) {
+                    return shop;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -716,6 +743,34 @@ public class ShopManager implements Listener {
         }
 
         return count;
+    }
+
+    public void validateShopRegions(CommandSender sender, boolean updateRegions) {
+        int invalid = 0;
+        for (Shop shop : shopMap.values()) {
+            if (!shop.validateMembers()) {
+                invalid++;
+                if (updateRegions) {
+                    shop.updateMembers();
+                    sender.sendMessage(ChatColor.YELLOW + "Shop " + shop.getId() + " had its shop regions fixed");
+                }
+                else {
+                    sender.sendMessage(ChatColor.YELLOW + "Shop " + shop.getId() + " has mismatching region data");
+                }
+            }
+        }
+
+        if (invalid == 0) {
+            sender.sendMessage(ChatColor.GREEN + "All shops have the correct region data");
+        }
+        else {
+            if (updateRegions) {
+                sender.sendMessage(ChatColor.GOLD + String.valueOf(invalid) + " shop(s) had their region data fixed");
+            }
+            else {
+                sender.sendMessage(ChatColor.RED + String.valueOf(invalid) + " shop(s) have mismatching region data");
+            }
+        }
     }
 
     /**
