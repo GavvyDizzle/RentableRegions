@@ -44,6 +44,7 @@ A flexible market/cells/player housing Spigot plugin
 - All commands require permission to use which follows the format `rentableregions.admin.command` where command is the name of the command
 - `/rr clone <id> <region>` Create a new shop and copy properties from another
 - `/rr create <id> [region]` Create a new shop
+- `/rr copyProperties <fromID> <toID>` Copies a shop's properties to another shop
 - `/rr delete <id>` Delete a shop
 - `/rr dump <arg>` Collect plugin information
 - `/rr help [page]` Opens the help menu
@@ -56,6 +57,7 @@ A flexible market/cells/player housing Spigot plugin
 - `/rr toggleTimer` Toggles the shop timer on/off
 - `/rr transfer <id> <toPlayer> [time]` Transfer shop ownership and set the rent time remaining
 - `/rr updateSigns` Reloads the text on all shop signs
+- `/rr validateRegionParents` Checks if all shop regions inherit from a parent region
 - `/rr validateRegions [update]` Checks all shop regions for owner and member mismatches
 - `/rr visitLocation <id> <exact|snap> [x] [y] [z] [pitch] [yaw]` Edit a shop's visit location
 

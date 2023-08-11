@@ -41,7 +41,7 @@ public class Messages {
 
     // Invites
     public static String inviteSent, inviteReceived, sentInviteAccepted, receivedInviteAccepted, sentInviteExpired, receivedInviteExpired, sentInviteCancelled, receivedInviteCancelled, noPendingInvite, maxMembersReached;
-    public static String noOutstandingInvite, otherOutstandingInvite;
+    public static String noOutstandingInvite, otherOutstandingInvite, inLotteryOnInvite, joinedLotteryDuringInvite;
 
     // Trading
     public static String creatorConfirmation, creatorSentTrade, recipientConfirmation;
@@ -112,6 +112,8 @@ public class Messages {
         config.addDefault("maxMembersReached", "&cThe shop is at maximum player capacity");
         config.addDefault("noOutstandingInvite", "&cYou do not have an outstanding invite");
         config.addDefault("otherOutstandingInvite", "&cYou cannot invite this player because they have an outstanding invite");
+        config.addDefault("inLotteryOnInvite", "&c{name} is currently in a lottery");
+        config.addDefault("joinedLotteryDuringInvite", "You joined a lottery with a pending invite. The invite is now invalid");
 
         // Trading
         config.addDefault("creatorConfirmation", "&f[Shop Trade] &eClick here to send the trade");
@@ -217,6 +219,8 @@ public class Messages {
         maxMembersReached = Colors.conv(config.getString("maxMembersReached"));
         noOutstandingInvite = Colors.conv(config.getString("noOutstandingInvite"));
         otherOutstandingInvite = Colors.conv(config.getString("otherOutstandingInvite"));
+        inLotteryOnInvite = Colors.conv(config.getString("inLotteryOnInvite"));
+        joinedLotteryDuringInvite = Colors.conv(config.getString("joinedLotteryDuringInvite"));
 
         // Trading
         creatorConfirmation = Colors.conv(config.getString("creatorConfirmation"));

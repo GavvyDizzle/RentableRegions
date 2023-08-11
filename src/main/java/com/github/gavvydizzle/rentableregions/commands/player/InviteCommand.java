@@ -59,6 +59,11 @@ public class InviteCommand extends SubCommand {
             return;
         }
 
+        if (shopManager.isInLottery(invited)) {
+            sender.sendMessage(Messages.inLotteryOnInvite.replace("{name}", args[1]));
+            return;
+        }
+
         // Allow the creator to make many messages, but only one to each player
         // Don't allow command to go through if the invited player has an existing invite
         if (shopManager.getInviteManager().doesPlayerHaveOutstandingInvite(invited)) {

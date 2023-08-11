@@ -138,7 +138,7 @@ public class TradeCommand extends SubCommand {
             return null;
         }
         else if (args.length == 3) {
-            StringUtil.copyPartialMatches(args[1], args2, arr);
+            StringUtil.copyPartialMatches(args[2], args2, arr);
         }
 
         return arr;

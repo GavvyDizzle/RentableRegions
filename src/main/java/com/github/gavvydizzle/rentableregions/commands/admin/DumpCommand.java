@@ -16,6 +16,7 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class DumpCommand extends SubCommand {
     private final ShopManager shopManager;
     private final String path;
     private final DateTimeFormatter dtf;
-    private final ArrayList<String> args2 = new ArrayList<>(Collections.singletonList("regions"));
+    private final ArrayList<String> args2 = new ArrayList<>(Arrays.asList("regions", "shopids"));
 
     public DumpCommand(AdminCommandManager adminCommandManager, ShopManager shopManager) {
         this.shopManager = shopManager;
@@ -57,6 +58,10 @@ public class DumpCommand extends SubCommand {
             // Only case, more can be added by adding branches to this if statement
             if (args[1].equalsIgnoreCase("regions")) {
                 output = shopManager.getAllShopRegions();
+                Collections.sort(output);
+            }
+            else if (args[1].equalsIgnoreCase("shopids")) {
+                output = shopManager.getShopIDs();
                 Collections.sort(output);
             }
 

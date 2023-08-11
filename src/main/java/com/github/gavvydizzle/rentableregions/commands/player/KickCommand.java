@@ -35,6 +35,11 @@ public class KickCommand extends SubCommand {
         if (!(sender instanceof Player)) return;
         Player player = (Player) sender;
 
+        if (args.length < 2) {
+            sender.sendMessage(getColoredSyntax());
+            return;
+        }
+
         Shop shop = shopManager.getShopByOwner(player);
         if (shop == null) {
             sender.sendMessage(Messages.isNotOwnerOfShop);

@@ -23,6 +23,7 @@ public class AdminCommandManager extends CommandManager {
         registerCommand(new AdminHelpCommand(this));
         registerCommand(new CloneCommand(this, shopManager));
         registerCommand(new CreateCommand(this, shopManager));
+        registerCommand(new CopyPropertiesCommand(this, shopManager));
         registerCommand(new DeleteCommand(this, shopManager));
         registerCommand(new DumpCommand(this, shopManager));
         registerCommand(new EditMemberCommand(this, shopManager));
@@ -30,13 +31,13 @@ public class AdminCommandManager extends CommandManager {
         registerCommand(new EditVisitLocationCommand(this, shopManager));
         registerCommand(new InfoCommand(this, shopManager));
         registerCommand(new ReloadCommand(this, shopManager, inventoryManager));
-        registerCommand(new SaveAllCommand(this, shopManager));
         registerCommand(new SetPropertyCommand(this, shopManager));
         signCommand = new SignCommand(this, shopManager);
         registerCommand(signCommand);
         registerCommand(new ToggleTimerCommand(this, shopManager));
         registerCommand(new TransferOwnershipCommand(this, shopManager));
         registerCommand(new UpdateSignsCommand(this, shopManager));
+        registerCommand(new ValidateRegionParentsCommand(this, shopManager));
         registerCommand(new ValidateRegionsCommand(this, shopManager));
         sortCommands();
 

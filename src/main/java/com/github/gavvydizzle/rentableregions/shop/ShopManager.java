@@ -773,6 +773,25 @@ public class ShopManager implements Listener {
         }
     }
 
+    public void validateShopRegionParents(CommandSender sender) {
+        int total = 0;
+        for (Shop shop : shopMap.values()) {
+            for (ProtectedRegion region : shop.getRegions()) {
+                if (region.getParent() == null) {
+                    total++;
+                    sender.sendMessage(ChatColor.YELLOW + "Region '" + region.getId() + "' has no parent region");
+                }
+            }
+        }
+
+        if (total == 0) {
+            sender.sendMessage(ChatColor.GREEN + "All shop regions have a parent region");
+        }
+        else {
+            sender.sendMessage(ChatColor.RED + String.valueOf(total) + " shop region(s) have no parent region");
+        }
+    }
+
     /**
      * Determines if this player is not in a valid shops world.
      * If CONSOLE is passed, then this method will always return false

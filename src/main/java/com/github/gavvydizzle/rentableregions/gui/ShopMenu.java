@@ -226,7 +226,7 @@ public class ShopMenu implements ClickableMenu {
 
     @Override
     public void closeInventory(Player player) {
-        numViewers--;
+        numViewers = Math.max(0, numViewers - 1);
     }
 
     @Override
@@ -255,8 +255,10 @@ public class ShopMenu implements ClickableMenu {
      * This should only be called at the end of the shop's decrease time method
      */
     public void updateOnTimeDecrease() {
-        updateRentItem();
-        updateLotteryItem();
+        if (numViewers > 0) {
+            updateRentItem();
+            updateLotteryItem();
+        }
     }
 
     public void updateAllItems() {

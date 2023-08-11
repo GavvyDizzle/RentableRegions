@@ -185,6 +185,18 @@ public class Shop {
     }
 
     /**
+     * Copies a shop's time, price, level, and member properties
+     * @param other The shop to copy from
+     */
+    public void copyProperties(Shop other) {
+        rentManager.setSecondsPerRent(other.rentManager.getSecondsPerRent());
+        rentManager.setMaxRentSeconds(other.rentManager.getMaxRentSeconds());
+        rentManager.setRentPrice(other.rentManager.getRentPrice());
+        rentManager.setLevelRequired(other.rentManager.getLevelRequired());
+        setMemberCapacity(other.memberCapacity);
+    }
+
+    /**
      * Attempts to message the owner and all members of this shop.
      * The message will only send if the player is online.
      * @param messages The message(s) to send.
@@ -451,7 +463,7 @@ public class Shop {
 
     /**
      * Determines if this player is allowed to join this shop.
-     * Checks if their level is equal to or higher and this shops' required level.
+     * Checks if their level is equal to or higher and this shop's required level.
      * If the player has prestiged, then the level requirement will be ignored.
      *
      * @param player the player to check

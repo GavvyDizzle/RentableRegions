@@ -92,7 +92,7 @@ public class SetPropertyCommand extends SubCommand {
         if (args[2].equalsIgnoreCase("level")) {
             oldValue = shop.getRentManager().getLevelRequired();
             shop.getRentManager().setLevelRequired(value);
-            sender.sendMessage(ChatColor.GREEN + "Successfully updated the shop's' level required to " + shop.getRentManager().getLevelRequired() +
+            sender.sendMessage(ChatColor.GREEN + "Successfully updated the shop's level required to " + shop.getRentManager().getLevelRequired() +
                     " (was " + oldValue + ")");
             shop.getShopMenu().updateExtraInfoItem();
         }
@@ -104,25 +104,25 @@ public class SetPropertyCommand extends SubCommand {
 
             oldValue = shop.getRentManager().getSecondsRemaining();
             shop.getRentManager().setTimeRemaining(value);
-            sender.sendMessage(ChatColor.GREEN + "Successfully updated the shop's' time remaining to " + Numbers.getTimeFormatted(shop.getRentManager().getSecondsRemaining()) +
+            sender.sendMessage(ChatColor.GREEN + "Successfully updated the shop's time remaining to " + Numbers.getTimeFormatted(shop.getRentManager().getSecondsRemaining()) +
                     " (was " + Numbers.getTimeFormatted(oldValue) + ")");
         }
         else if (args[2].equalsIgnoreCase("maxRentTime")) {
             oldValue = shop.getRentManager().getMaxRentSeconds();
             shop.getRentManager().setMaxRentSeconds(value);
-            sender.sendMessage(ChatColor.GREEN + "Successfully updated the shop's' max rent time to " + Numbers.getTimeFormatted(shop.getRentManager().getMaxRentSeconds()) +
+            sender.sendMessage(ChatColor.GREEN + "Successfully updated the shop's max rent time to " + Numbers.getTimeFormatted(shop.getRentManager().getMaxRentSeconds()) +
                     " (was " + Numbers.getTimeFormatted(oldValue) + ")");
         }
         else if (args[2].equalsIgnoreCase("rentPrice")) {
             oldValue = shop.getRentManager().getRentPrice();
             shop.getRentManager().setRentPrice(value);
-            sender.sendMessage(ChatColor.GREEN + "Successfully updated the shop's' rent price to $" + Numbers.withSuffix(shop.getRentManager().getRentPrice()) +
+            sender.sendMessage(ChatColor.GREEN + "Successfully updated the shop's rent price to $" + Numbers.withSuffix(shop.getRentManager().getRentPrice()) +
                     " (was $" + Numbers.withSuffix(oldValue) + " - exact: " + oldValue + ")");
         }
         else if (args[2].equalsIgnoreCase("timePerRent")) {
             oldValue = shop.getRentManager().getSecondsPerRent();
             shop.getRentManager().setSecondsPerRent(value);
-            sender.sendMessage(ChatColor.GREEN + "Successfully updated the shop's' time per rent to " + Numbers.getTimeFormatted(shop.getRentManager().getSecondsPerRent()) +
+            sender.sendMessage(ChatColor.GREEN + "Successfully updated the shop's time per rent to " + Numbers.getTimeFormatted(shop.getRentManager().getSecondsPerRent()) +
                     " (was " + Numbers.getTimeFormatted(oldValue) + ")");
         }
         else if (args[2].equalsIgnoreCase("capacity")) {
@@ -130,7 +130,7 @@ public class SetPropertyCommand extends SubCommand {
             shop.setMemberCapacity(value);
 
             if (oldValue != shop.getMemberCapacity()) {
-                sender.sendMessage(ChatColor.GREEN + "Successfully updated the shop's' member capacity " + shop.getMemberCapacity() +
+                sender.sendMessage(ChatColor.GREEN + "Successfully updated the shop's member capacity " + shop.getMemberCapacity() +
                         " (was " + oldValue + ")");
                 shop.getShopMenu().updateExtraInfoItem();
                 if (shop.isOverfilled())  {

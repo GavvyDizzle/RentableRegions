@@ -33,7 +33,7 @@ public class VisitCommand extends SubCommand {
     public void perform(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) return;
 
-        if (args.length < 1) {
+        if (args.length < 2) {
             sender.sendMessage(getColoredSyntax());
             return;
         }

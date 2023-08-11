@@ -89,6 +89,12 @@ public class InviteManager {
             return;
         }
 
+        if (shopManager.isInLottery(invitedPlayer)) {
+            invitedPlayer.sendMessage(Messages.joinedLotteryDuringInvite);
+            inviteExpired(invite);
+            return;
+        }
+
         if (invite.getCreator().isOnline()) {
             invite.getCreator().sendMessage(Messages.sentInviteAccepted);
         }
