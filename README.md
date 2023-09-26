@@ -13,6 +13,7 @@ A flexible market/cells/player housing Spigot plugin
 ### Requirements
 - There are a few required dependencies: [ServerUtils](https://www.spigotmc.org/resources/serverutils.106515/), [Vault](https://www.spigotmc.org/resources/vault.34315/), [WorldEdit](https://dev.bukkit.org/projects/worldedit) or [FAWE](https://www.spigotmc.org/resources/fastasyncworldedit.13932/), [WorldGuard](https://dev.bukkit.org/projects/worldguard)
 - And my private plugins PlayerLevels and RankUps (currently unavailable)
+  - Only used for claiming permission (can easily be removed)
 
 ### Setup
 - In the plugin's config.yml, you need to change the `world:` to the world you will put all of your shops in.
@@ -77,7 +78,7 @@ A flexible market/cells/player housing Spigot plugin
 
 ![img.png](images/shop_menu.png)
 
-### Trading
+### Trading - CURRENTLY BROKEN - DISABLE THIS COMMAND
 - A common issue is moving shops between players, so a trading system has been put in place
 - There were 3 types of trades that players can create (they are named from the perspective of the creator of the trade)
   - `Buy Trade` The creator pays the recipient for their shop
@@ -129,7 +130,7 @@ A flexible market/cells/player housing Spigot plugin
    - `/rr set shop-1 timePerRent 43200` This will set the time per rent to 12 hours per $2500
 #### Cloning your shop
 1. Make another region for this shop, let's call it `shop-2a`
-2. Use `/rr clone <id> <newID> <region` where my command is `/rr clone shop-1 shop-2 shop-2a`
+2. Use `/rr clone <id> <newID> <region>` where my command is `/rr clone shop-1 shop-2 shop-2a`
    - Cloning a shop copies all the settings we changed earlier and our first shop's region priority
 3. After setting the sign and visit location, this shop is ready to go!
 

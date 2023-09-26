@@ -222,11 +222,13 @@ public class ShopMenu implements ClickableMenu {
 
         player.openInventory(inventory);
         numViewers++;
+        System.out.println(player.getName() + " Opened menu (" + numViewers + " viewers exist)");
     }
 
     @Override
     public void closeInventory(Player player) {
         numViewers = Math.max(0, numViewers - 1);
+        System.out.println(player.getName() + " Closed menu (" + numViewers + " viewers remain)");
     }
 
     @Override

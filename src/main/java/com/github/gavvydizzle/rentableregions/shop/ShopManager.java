@@ -168,7 +168,7 @@ public class ShopManager implements Listener {
      * Saves all shops to the config file
      */
     public void saveAllShops() {
-        if (shopMap.size() == 0 || regionManager == null) return;
+        if (shopMap.isEmpty() || regionManager == null) return;
 
         FileConfiguration config = ShopsConfig.get();
 
@@ -190,7 +190,7 @@ public class ShopManager implements Listener {
      * @param list A list of dirty shops
      */
     private void saveDirtyShops(ArrayList<Shop> list) {
-        if (shopMap.size() == 0 || regionManager == null) return;
+        if (shopMap.isEmpty() || regionManager == null) return;
 
         FileConfiguration config = ShopsConfig.get();
 

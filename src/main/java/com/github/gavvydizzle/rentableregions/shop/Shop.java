@@ -85,7 +85,7 @@ public class Shop {
         this.id = id.toLowerCase();
 
         regions = new ArrayList<>();
-        if (clone.regions.size() > 0) {
+        if (!clone.regions.isEmpty()) {
             region.setPriority(clone.regions.get(0).getPriority());
         }
         regions.add(region);
@@ -545,7 +545,7 @@ public class Shop {
      * @param region The region to add
      */
     protected void addRegion(ProtectedRegion region) {
-        if (regions.size() > 0) {
+        if (!regions.isEmpty()) {
             ProtectedRegion template = regions.get(0);
             region.setMembers(template.getMembers());
             region.setOwners(template.getOwners());

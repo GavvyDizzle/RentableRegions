@@ -92,8 +92,8 @@ public class InventoryManager implements Listener {
      * @param clickableMenu The menu to open
      */
     public void openMenu(Player player, ClickableMenu clickableMenu) {
-        onMenuOpen(player, clickableMenu);
         clickableMenu.openInventory(player);
+        onMenuOpen(player, clickableMenu);
     }
 
 }
