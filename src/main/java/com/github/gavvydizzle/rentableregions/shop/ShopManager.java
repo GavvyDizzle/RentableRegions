@@ -401,9 +401,52 @@ public class ShopManager implements Listener {
             return false;
         }
 
+        // Remove the config section for this shop
+        // If the file is saving, this will wait until saving is complete to delete the shop's data
+        // This should only fail if the saving mechanism breaks
+        final String oldID = shop.getId();
+        if (isSaving || shop.isSaving()) {
+            new RepeatingTask(instance, 5, 4) {
+                int count = 0;
+                @Override
+                public void run() {
+                    if (count >= 5) {
+                        instance.getLogger().severe("Failed to update shop (changing ID) " + oldID + " after 5 attempts. This shop's old ID will reappear the next time the shops file gets reloaded.");
+                        cancel();
+                        return;
+                    }
+
+                    if (!isSaving && !shop.isSaving())  {
+                        FileConfiguration config = ShopsConfig.get();
+                        config.set("shops." + newID, config.getConfigurationSection("shops." + oldID));
+                        config.set("shops." + newID + ".id", newID);
+                        config.set("shops." + oldID, null);
+                        ShopsConfig.save();
+                        cancel();
+                        return;
+                    }
+
+                    count++;
+                }
+            };
+        }
+        else {
+            FileConfiguration config = ShopsConfig.get();
+            config.set("shops." + newID, config.getConfigurationSection("shops." + oldID));
+            config.set("shops." + newID + ".id", newID);
+            config.set("shops." + oldID, null);
+            ShopsConfig.save();
+        }
+
         shopMap.remove(shop.getId());
         shopMap.put(newID, shop);
         shop.setId(newID);
+
+        // Update the sign and inventory to have the new ID
+        updateShopSign(shop);
+        inventoryManager.closeShopMenu(shop);
+        shop.getShopMenu().setInventoryNull();
+
         return true;
     }
 

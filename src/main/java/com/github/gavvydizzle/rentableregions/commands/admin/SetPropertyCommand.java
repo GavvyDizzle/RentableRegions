@@ -63,7 +63,7 @@ public class SetPropertyCommand extends SubCommand {
             return;
         }
 
-        if (args[3].equalsIgnoreCase("id")) {
+        if (args[2].equalsIgnoreCase("id")) {
             String newID = args[3];
             String oldID = shop.getId();
 
